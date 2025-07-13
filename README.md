@@ -1,1 +1,1 @@
-# java-oop-learn
+Taken from the [Java Object-Oriented Programming](https://www.linkedin.com/learning/java-object-oriented-programming-2/why-learn-about-object-oriented-programming-in-java?u=76881922) course in LinkedIn Learning.
