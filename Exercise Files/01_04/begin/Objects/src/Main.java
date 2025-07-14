@@ -11,5 +11,7 @@ public class Main {
         myFavoriteOakTree.announceTallTree();
 
         myFavoriteMapleTree.announceTallTree();
+
+        Tree.announceTree();
     }
 }
