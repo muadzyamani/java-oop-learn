@@ -195,3 +195,125 @@ Color myDefaultBlue = Color.BLUE;
 *   **`Color brighterBlue = myDefaultBlue.brighter();` (Correct)**
 *   `Color brighterBlue = Color.BLUE.brighter();`
 *   `public Color brighter() { Color myDefaultBlue = Color.BLUE }`
+
+---
+
+# 2. Encapsulation in Java
+## What is encapsulation?
+
+*   **Definition:** Encapsulation is the principle of binding an object's state (data) and behavior (code acting on the data) together into a single unit, like a Java class.
+*   **Benefit: Loose Coupling:** It prevents classes from being "tightly coupled." This allows you to modify the internal data or behaviors of one class without breaking the rest of the program.
+*   **Implementation:**
+    *   Achieved by creating a clear interface and restricting direct access to a class's components.
+    *   A class's attributes are made "hidden" (e.g., using `private`) from other classes.
+    *   The hidden data is accessed indirectly through the public methods of the class (getters and setters).
+*   **Advantages:**
+    *   **Robustness:** Programs become more robust to changes. If an attribute's name or storage method changes, only the class itself needs to be updated.
+    *   **Security & Error Prevention:** It prevents attributes from being overwritten with invalid or unexpected values, making the program more secure and less error-prone.
+
+## Discovering access modifiers
+
+*   In Java, encapsulation is achieved using **access modifiers**, which are keywords that set the visibility level for variables and methods.
+*   **The Three Access Modifiers:**
+    *   `private`: Visible only within the class they are defined in.
+    *   `protected`: Visible to the package and all subclasses.
+    *   `public`: Accessible from everywhere within the program.
+*   **Default (Package-Private):** If no modifier is provided, the member is only visible within its own package.
+*   **Example Application:**
+    *   The `main` method is `public` so the Java Virtual Machine (JVM) can execute it.
+    *   In the `Tree` class example:
+        *   Instance attributes (`height`, `treeType`) were made `private`.
+        *   Methods and the constructor were made `public`.
+*   **Effect:** Making attributes `private` means they can no longer be accessed directly from other classes (e.g., `myTree.height` will cause an error). Access must now go through public methods.
+
+## Implementing encapsulation with access modifiers
+
+*   The standard way to implement encapsulation for attributes is:
+    1.  Declare all attributes as `private`.
+    2.  Write `public` methods to get (**getters**) and set (**setters**) the values of the attributes.
+*   **Getters:** Public methods that allow other classes to retrieve the value of a private attribute.
+    *   Example: `public double getHeightFt() { return heightFt; }`
+*   **Setters:** Public methods that allow other classes to modify the value of a private attribute.
+    *   Example: `public void setTrunkDiameterInches(double diameter) { ... }`
+*   **Controlling Data Modification:**
+    *   This pattern gives the class complete control over its data.
+    *   The `grow()` method is another way to modify `height`, but it's a controlled change (it only increases).
+    *   By *not* providing a setter for an attribute (like `treeType`), it can be made **immutable** (unchangeable) after the object is created.
+*   This approach makes programs more scalable and secure by centralizing the logic for how an object can change.
+
+## Exploring encapsulation in Java string class
+
+*   The built-in `java.lang.String` class is a prime example of encapsulation.
+*   **Hidden Internals:** A `String` object stores its sequence of characters in a `private` byte array. This internal implementation is completely hidden from the user.
+*   **Benefit of Hiding:** In Java 9, the internal storage of `String` was changed from a `char[]` to a `byte[]` to save memory ("Compact Strings"). Because the array was `private` and all access was through public methods (`length()`, `charAt()`, etc.), this major internal change did not break existing Java programs. This demonstrates the power of **loose coupling**.
+*   **Immutability:** The `String` class has no public "setter" methods that can modify the internal array. This makes strings immutable, which is a key feature enforced by encapsulation.
+
+## Challenge: Banking application
+
+*   **Task:** Apply encapsulation to a `BankAccount` class.
+*   **Starting Point:** A class with `owner` and `balance` attributes.
+*   **Requirements:**
+    *   Encapsulate the `owner` and `balance` attributes.
+    *   Add a `constructor` to create a `BankAccount` instance.
+    *   Add `withdrawal()` and `deposit()` methods.
+    *   Add getters to retrieve the balance and owner.
+    *   In a `main` class, create an account, perform transactions, and print the final balance, ensuring attributes are not accessed directly.
+
+## Solution: Banking application
+
+*   **Implementation Steps:**
+    1.  The `owner` and `balance` attributes are made `private`.
+    2.  A `public` constructor is created to set the initial owner and balance.
+        *   It includes a safety check to prevent negative starting balances: `this.balance = Math.max(startingBalance, 0);`.
+    3.  Public `deposit()` and `withdrawal()` methods are created. These act as controlled setters for the `balance`.
+        *   The `deposit()` method checks that the deposit amount is positive.
+        *   The `withdrawal()` method checks that there are sufficient funds in the account.
+    4.  No setter is created for the `owner`, making it immutable after the account is created.
+    5.  Getters for `owner` and `balance` are created to allow indirect access.
+*   **Outcome:** Encapsulation allows for safety checks and business logic to be built into the class itself, ensuring the object's state (`balance`) is always valid.
+
+## Chapter Quiz
+
+**Question 1 of 4**
+
+How should you define a set of methods to be only visible to their containing class?
+
+*   `protected`
+*   `public`
+*   **`private` (Correct)**
+
+**Question 2 of 4**
+
+Toren created the following three private attributes for a class called Tree. How should she create a get method within her Tree class that obtains the attribute value of heightFt?
+
+```java
+private double heightFt;
+private double trunkDiameterInches;
+private TreeType treeType;
+```
+
+*   `void double getHeightFt() { heightFt = 180; }`
+*   `private TreeType getHeightFt() { return heightFt; }`
+*   **`public double getHeightFt() { return heightFt; }` (Correct)**
+
+**Question 3 of 4**
+
+How is encapsulation beneficial?
+
+*   It gives direct access to the components of classes.
+*   It couples functionality and its related data.
+*   **It prevents classes from becoming tightly coupled. (Correct)**
+
+**Question 4 of 4**
+
+You created the following string. How can you use the included methods from the Java string class to determine the length of your string?
+
+```java
+String name = "Kathryn";
+```
+
+*   `return value.length`
+*   **`name.length()` (Correct)**
+*   `String.length(name)`
+
+---
