@@ -15,6 +15,22 @@ public class Tree {
         this.treeType = treeType;
     }
 
+    public double getHeightFt() {
+      return heightFt;
+    }
+
+    public double getTrunkDiameterInches() {
+      return trunkDiameterInches;
+    }
+
+    public void setTrunkDiameterInches(double trunkDiameterInches) {
+      this.trunkDiameterInches = trunkDiameterInches;
+    }
+
+    public TreeType getTreeType() {
+      return treeType;
+    }
+    
     public void grow() {
         this.heightFt = heightFt + 10;
         this.trunkDiameterInches = trunkDiameterInches + 1;
