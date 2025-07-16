@@ -317,3 +317,120 @@ String name = "Kathryn";
 *   `String.length(name)`
 
 ---
+
+# 3. Inheritance in Java
+
+## What is inheritance?
+
+*   **Definition:** Inheritance is an object-oriented principle that allows us to create class hierarchies where one class (a subclass) can inherit properties and behaviors from another class (a superclass).
+*   **Key Terminology:**
+    *   **Subclass (Child Class):** The class that inherits from another class.
+    *   **Superclass (Parent Class):** The class that is being inherited from.
+*   **"Is A" Relationship:** Inheritance represents an "is a" relationship. For example, a `Salesperson` is an `Employee`. This means a `Salesperson` has all the attributes and behaviors of an `Employee`, plus its own specific ones.
+    *   The reverse is not necessarily true (not all employees are salespersons).
+*   **Benefits:**
+    *   **Code Reusability:** Common properties and functionality can be written in a single superclass and reused by multiple subclasses, avoiding code duplication.
+    *   **Scalability:** Changes made to the superclass are automatically propagated to all its subclasses, making the codebase easier to maintain and extend.
+
+## Leveraging different types of inheritance
+
+*   **Single-Level Inheritance:** A single subclass inherits from a single superclass (e.g., `Salesperson` inherits from `Employee`).
+*   **Hierarchical Inheritance:** One superclass has multiple subclasses (e.g., `Salesperson` and `Analyst` both inherit from `Employee`).
+*   **Multi-Level Inheritance:** A class inherits from a superclass, which in turn inherits from another superclass, forming a chain (e.g., `Salesperson` -> `Employee` -> `Person`).
+*   **Inheritance Not Supported in Java:**
+    *   **Multiple Inheritance:** A class inheriting from more than one superclass.
+    *   **Hybrid Inheritance:** A mix of different inheritance types that results in multiple inheritance.
+    *   **Reason:** These are not supported in Java to avoid unnecessary complexity in areas like casting and constructor chaining.
+*   **Core Java Rule:** A class can extend only **one** superclass, but it can have multiple subclasses.
+
+## Using inheritance to reduce code duplication
+
+*   **`extends` Keyword:** Inheritance is implemented in Java using the `extends` keyword in the subclass definition.
+    *   Example: `public class Salesperson extends Employee { ... }`
+*   **Refactoring Example:**
+    *   Instead of `Salesperson` and `Analyst` classes having duplicate code for `name`, `age`, and `salary`, a common `Employee` superclass is created to hold this shared code.
+    *   The `Salesperson` and `Analyst` classes then `extend` the `Employee` class.
+*   **`super` Keyword:**
+    *   Used in a subclass's constructor to call the constructor of its superclass.
+    *   This is necessary to initialize the attributes inherited from the parent.
+    *   Example: `super(name, salary, age);`
+*   **Access Modifiers in Inheritance:**
+    *   `private` members of a superclass are **not** accessible to its subclasses.
+    *   `protected` members **are** accessible to subclasses. To allow a subclass to access an attribute from its parent, the attribute should be declared `protected` instead of `private`.
+
+## Discovering inheritance in foundational Java classes
+
+*   The Java Development Kit (JDK) itself uses inheritance extensively.
+*   **Example: `java.util.Stack`**
+    *   The `Stack` class `extends` the `Vector` class.
+    *   `Stack` is the **subclass**; `Vector` is the **superclass**.
+    *   `Stack` reuses the functionality of `Vector` for its own methods. For instance, the `push()` method in `Stack` calls the `addElement()` method inherited from `Vector`.
+    *   `Stack` adds its own specialized behavior (LIFO - Last-In, First-Out) by providing methods like `pop()`, which removes an item from a specific location, but it still relies on the underlying removal logic from `Vector`'s `removeElementAt()` method.
+    *   This demonstrates how inheritance allows for reusing well-tested code while adding new, specialized functionality.
+
+## Challenge: Reduce redundant code with inheritance
+
+*   **Task:** Create a `ModArrayList` class that provides a foolproof way of accessing items in a list without causing an out-of-bounds error.
+*   **Requirements:**
+    *   The class should have all the functionality of a standard `ArrayList`.
+    *   It should contain a new method, `getUsingMod(int index)`.
+    *   This method should use the modulo (`%`) operator to wrap an invalid index around to a valid one based on the list's size.
+    *   It should also handle negative indices by making them positive.
+    *   The key is to use **inheritance** to avoid re-implementing all of `ArrayList`'s functionality.
+
+## Solution: Reduce redundant code with inheritance
+
+*   **Implementation:**
+    *   The `ModArrayList` class is defined to `extend` `ArrayList`:
+        `public class ModArrayList<E> extends ArrayList<E>`
+    *   The `getUsingMod` method is implemented:
+        1.  It takes an `index` as input.
+        2.  It makes the index positive using `Math.abs()`.
+        3.  It calculates a `validIndex` using the modulo operator: `validIndex = Math.abs(index) % this.size();`
+        4.  It uses the `get()` method inherited from `ArrayList` to retrieve the item at the `validIndex`: `return this.get(validIndex);`
+*   **Conclusion:** By using inheritance, the solution only had to focus on the new `mod` logic. All the complex underlying functionality of how to store and retrieve items was provided by the `ArrayList` superclass, significantly reducing code and preventing bugs.
+
+## Chapter Quiz
+
+**Question 1 of 5**
+
+Which inheritance type is not supported by Java, and why?
+
+*   **Hybrid inheritance is not supported because it causes unnecessary complexity. (Correct)**
+*   Hierarchical inheritance is not supported because it is not OOP.
+*   Single-level inheritance is not supported because it is overly simplified.
+
+**Question 2 of 5**
+
+Tan created a superclass called Employees in Java. He needs to create a subclass called Salesperson. Ignoring attributes and behaviors for now, how should he code the base template for this class?
+
+*   `public class Employee { public class Salesperson { } }`
+*   `public Superclass Salesperson Subclass Employee { }`
+*   **`public class Salesperson extends Employee { }` (Correct)**
+
+**Question 3 of 5**
+
+The Stack class is a built-in class in Java that extends the Vector class. What does this mean?
+
+*   Stack and Vector are independent classes.
+*   **Stack is a subclass of the superclass Vector. (Correct)**
+*   Stack is a superclass of the subclass Vector.
+
+**Question 4 of 5**
+
+How is inheritance beneficial in object-oriented programming?
+
+*   **It promotes code reusability and scalability. (Correct)**
+*   It allows duplicated code in two different places.
+*   It simplifies design by hiding unnecessary details.
+
+**Question 5 of 5**
+
+What is inheritance as an object-oriented programming principle?
+
+*   Implementation details are hidden from users.
+*   State and behavior are bound together into a single unit.
+*   **Code is organized through class hierarchies. (Correct)**
+
+---
+
