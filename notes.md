@@ -574,3 +574,143 @@ Which statement best explains predicates in Java?
 *   **They take in a value and return true or false. (Correct)**
 *   They determine whether an integer is odd or even.
 *   They override methods from an extended class.
+
+---
+
+# 5. Abstraction in Java
+
+## What is abstraction?
+
+*   **Definition:** Abstraction is the practice of hiding implementation complexity to generalize the features of a system.
+*   **Goal:** To provide a user with a simple interface (inputs, outputs, and a general description) without exposing the complex technical details of how the system works internally.
+*   **Analogy (Pod Coffee Machine):** A user knows they need to input water and a coffee pod to get a cup of coffee. They can operate the machine without knowing the internal mechanics of heating, pumping, and brewing. The machine's interface abstracts away this complexity.
+*   **Abstraction in Java:** Achieved primarily through **abstract classes** and **interfaces**.
+*   **Benefit for Developers:** Engineers can contribute to a system without needing to understand every detail of its implementation. They only need to know how to interact with its public interface, which allows them to focus on adding new features.
+
+## Using abstract classes in Java to reduce code complexity
+
+*   **Abstract Class:** A template for a class where some of the functionality is not yet implemented.
+    *   It **cannot** be instantiated directly.
+    *   Other classes can **extend** the abstract class to use its functionality and provide implementations for the missing parts.
+*   **Abstract Method:** A method declared with the `abstract` keyword that has no implementation (no method body).
+*   A class containing one or more abstract methods must also be declared as `abstract`.
+*   **Example: `AbstractFileReader`**
+    *   An `abstract class` that defines a standard algorithm for reading a file in its `readFile()` method.
+    *   This common algorithm relies on a `parseLine()` method to process each line.
+    *   The `parseLine()` method is declared as `abstract` because the specific parsing logic will differ for each type of file reader.
+*   **Concrete Subclass:**
+    *   A class like `DigitsOnlyFileReader` `extends` `AbstractFileReader`.
+    *   It **must** provide a concrete implementation for the `parseLine()` abstract method.
+    *   It inherits the `readFile()` method, reusing the common algorithm without having to rewrite it.
+*   **Benefit:** This pattern centralizes the core algorithm in one place and forces subclasses to provide only the specific, varying parts of the implementation, making the code easier to read and extend.
+
+## Using interfaces in Java to provide conformity
+
+*   **Interface:** A collection of method signatures (and constants) that define a set of behaviors. It acts as a contract or specification.
+    *   Like an abstract class, an interface **cannot** be instantiated.
+*   **`implements` Keyword:** A class uses the `implements` keyword to adopt an interface.
+*   **The Contract:** A class that implements an interface **must** provide a concrete implementation for all methods defined in that interface.
+*   **Example: `Event` Interface**
+    *   An interface specifying that any `Event` must have `getTimeStamp()` and `process()` methods.
+    *   Concrete classes like `PasswordChangeEvent` and `MissedPaymentEvent` `implements Event`.
+    *   Each class provides its own unique implementation for the `process()` method, conforming to the contract.
+*   **Benefits:**
+    *   **Conformity:** Enforces a standard structure across different classes.
+    *   **Abstraction and Polymorphism:** Allows different types of event objects to be treated simply as `Event`s, abstracting away their specific implementation details. You can iterate through an array of `Event` objects and call `process()` on each, and the correct specific implementation will run.
+    *   **Maintainability:** If a new method is added to the interface, all implementing classes must be updated, ensuring consistency across the system.
+
+## Discovering abstraction in Java source code
+
+*   The Java standard library uses a common design pattern combining interfaces and abstract classes.
+*   **Example: `ArrayList` and the Collections Framework**
+    *   A class can **extend only one class** but can **implement several interfaces**.
+    *   The hierarchy is:
+        1.  `ArrayList` (concrete class)
+        2.  `extends AbstractList` (abstract class)
+        3.  `extends AbstractCollection` (abstract class)
+        4.  `implements Collection` (interface)
+        5.  `extends Iterable` (interface)
+*   **The Common Pattern:**
+    1.  An **interface** (`Collection`) defines the contract (e.g., `size()`, `add()`, `iterator()`).
+    2.  An **abstract class** (`AbstractCollection`) implements the interface and provides default, "skeletal" implementations for common methods (e.g., `isEmpty()` is implemented by checking if `size()` is 0). It leaves methods that depend on the specific data structure as `abstract`.
+    3.  A **concrete class** (`ArrayList`) extends the abstract class. It gets all the default behaviors for free and only needs to provide implementations for the abstract methods defined in the parent abstract class.
+*   This pattern provides maximum code reuse while allowing for specific, high-performance implementations in the concrete classes.
+
+## Challenge: Leverage abstraction to write simpler applications
+
+*   **Task:** Refactor an application with three event classes (`PasswordChangeEvent`, `MissedPaymentEvent`, `AccountTransferEvent`) that all implement an `Event` interface.
+*   **Problem:** The three classes have duplicated code for attributes (`timestamp`, `ID`) and the implementation of the `getTimestamp()` method.
+*   **Goal:** Eliminate this code duplication by using abstraction, while ensuring the classes can still be treated as `Event` objects.
+
+## Solution: Leverage abstraction to write simpler applications
+
+*   The solution follows the common Java pattern:
+    1.  The **`Event` interface** remains unchanged.
+    2.  A new **`AbstractEvent` abstract class** is created that `implements Event`.
+    3.  The duplicated attributes (`timestamp`, `ID`) and the common `getTimestamp()` implementation are moved into `AbstractEvent`.
+    4.  The `process()` method is declared as `abstract` inside `AbstractEvent`.
+    5.  The concrete event classes (`PasswordChangeEvent`, etc.) are changed to **`extend AbstractEvent`** instead of implementing `Event` directly.
+    6.  The concrete classes now only need to provide their unique implementation for the `process()` method.
+*   **Result:** Code duplication is removed. Logic common to all events is in one place (`AbstractEvent`), while logic specific to each event type is in its own class. This simplifies the design and makes it easier to add new event types.
+
+## Chapter Quiz
+
+**Question 1 of 7**
+
+You have a class that implements an interface. Later, you need to add a new method signature to the interface. How must you update the associated class?
+
+*   **Update the class to implement the new method. (Correct)**
+*   Update the class to extend the new method.
+*   Update the class to conform with the event array.
+
+**Question 2 of 7**
+
+What is an interface?
+
+*   a set of implemented methods contained within an abstract class
+*   **a set of method signatures for to-be-implemented functionality (Correct)**
+*   a set of methods that implement the event interface
+
+**Question 3 of 7**
+
+Ibrahim changed one of his class methods to an abstract method. How should he change his class header, shown here, to account for this change and avoid an associated error?
+
+```java
+public class FileReader{}
+```
+
+*   `public class AbstractFileReader{}`
+*   `private class AbstractFileReader{}`
+*   **`public abstract class FileReader{}` (Correct)**
+
+**Question 4 of 7**
+
+Which statement about abstract classes in Java is true?
+
+*   You cannot instantiate an abstract class, and other classes cannot extend the abstract class.
+*   You can instantiate an abstract class, but other classes cannot extend the abstract class.
+*   **You cannot instantiate an abstract class, but other classes can extend the abstract class. (Correct)**
+
+**Question 5 of 7**
+
+Digging into the built-in Java class ArrayList, which class should you find the Collections interface extends?
+
+*   **Iterable (Correct)**
+*   AbstractCollection
+*   AbstractList
+
+**Question 6 of 7**
+
+How many classes and how many interfaces can a class in Java extend?
+
+*   several classes and several interfaces
+*   one class and one interface
+*   **one class and several interfaces (Correct)**
+
+**Question 7 of 7**
+
+How is abstraction beneficial in software development?
+
+*   It allows method and attribute overloading.
+*   It removes the need for private method types.
+*   **It simplifies complex systems into managable components. (Correct)**
