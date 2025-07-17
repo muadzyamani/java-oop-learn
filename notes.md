@@ -714,3 +714,54 @@ How is abstraction beneficial in software development?
 *   It allows method and attribute overloading.
 *   It removes the need for private method types.
 *   **It simplifies complex systems into managable components. (Correct)**
+
+---
+
+# Conclusion
+## Identifying code smells and anti-patterns in OOP code
+
+*   **Code Smells:**
+    *   **Definition:** Indicators or warning signs in your code that suggest potential problems or areas for improvement. They are not necessarily bugs.
+*   **Examples of Code Smells:**
+    *   **Class Bloat:** A class becomes too large and handles too many responsibilities.
+        *   **Problem:** Difficult to maintain and understand.
+        *   **Solution:** Refactor into smaller, more focused classes.
+    *   **Long Methods:** A method that is too long, making it difficult to read and understand. Software should be composed of many small, independent components.
+    *   **God Object:** A class that knows and does too much, often having many attributes and methods.
+        *   **Problem:** Becomes a single point of failure for the application.
+    *   **Feature Envy:** A method in one class has a strong interest in the internal details or attributes of another class.
+        *   **Problem:** Creates excessive coupling, making the two classes less independent.
+        *   **Solutions:**
+            1.  Move the method over to the class it "envies".
+            2.  Create an interface to define a clear contract between the two classes.
+*   **Guiding Principle: Single Responsibility Principle (SRP)**
+    *   One of the five SOLID principles of object-oriented design.
+    *   **Definition:** A class or module should have a single, well-defined responsibility or job within a system.
+    *   Following SRP helps to avoid code smells like class bloat and god objects.
+*   **Goal:** Identifying code smells early and creating a plan to address them helps maintain a high standard of code quality.
+
+## Chapter Quiz
+
+**Question 1 of 3**
+
+What are code smells?
+
+*   warning signs that indicate a future bug
+*   **warning signs that indicate code can be improved (Correct)**
+*   warning signs that indicate performance issues
+
+**Question 2 of 3**
+
+How should you fix issues such as class bloat and long methods?
+
+*   **Refactor into smaller components. (Correct)**
+*   Merge into compact components.
+*   Define interfaces between components.
+
+**Question 3 of 3**
+
+What is the single responsibility principle?
+
+*   A class should only extend a single other class.
+*   **A class should have a single responsibility in a system. (Correct)**
+*   A class should have a single attribute and method.
