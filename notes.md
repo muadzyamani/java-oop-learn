@@ -434,3 +434,143 @@ What is inheritance as an object-oriented programming principle?
 
 ---
 
+# 4. Polymorphism in Java
+## What is polymorphism?
+
+*   **Definition:** Polymorphism is the ability for an object or function to take on many forms. The specific form used depends on the context, making code more flexible and less complex.
+*   **Practical Example:** A `ModArrayList` object can be used in the form of a `ModArrayList` (when calling its custom methods) and also in the form of an `ArrayList` (when calling inherited methods like `add`). The object's ability to use functionality from different classes is a key idea in polymorphism.
+*   **Types of Polymorphism in Java:**
+    1.  **Runtime Polymorphism (Method Overriding)**
+    2.  **Compile-time Polymorphism (Method Overloading)**
+
+## Writing reusable algorithms with runtime polymorphism
+
+*   Runtime polymorphism is implemented through **method overriding**.
+*   **Method Overriding:** A subclass provides a specific implementation for a method that is already defined in its superclass.
+*   **Requirements for Overriding:**
+    *   The method in the subclass must have the **exact same name, return type, and parameters** (i.e., the same method signature) as the method in the superclass.
+    *   The `@Override` annotation should be used to indicate to the compiler that you intend to override a method. This helps prevent errors.
+*   **`super` Keyword:** Inside an overridden method, you can still access the original implementation from the superclass using the `super` keyword (e.g., `super.add(element)`).
+*   **Example: `OddArrayList`**
+    *   An `OddArrayList` class extends `ArrayList`.
+    *   It overrides the `add()`, `addAll()`, and `set()` methods.
+    *   The new implementation first checks if a number is odd before calling the original `super` method to actually add the element to the list.
+    *   This reuses the core functionality of the superclass while modifying its behavior.
+
+## Exploring different forms in a single object
+
+*   An object of a subclass can be treated as an object of its superclass. This allows for writing generic, reusable functions.
+*   **Example:** A function `addRandomNumber(ArrayList<Integer> list)` can accept both a regular `ArrayList` and our custom `OddArrayList`.
+*   **Runtime Decision:** When a method like `list.add()` is called inside that function, Java determines **at runtime** which version of the method to execute based on the object's actual type.
+    *   If `list` is an `OddArrayList`, the overridden `add()` method is called.
+    *   If `list` is a regular `ArrayList`, the standard `add()` method is called.
+*   This ability to use a common interface (`ArrayList`) to manipulate objects of different specific types (`ArrayList`, `OddArrayList`) is a core strength of runtime polymorphism.
+
+## Accessing specific object forms with instanceof
+
+*   Sometimes, you need to access methods or attributes that only exist in the more specific subclass.
+*   **`instanceof` Operator:** This operator checks if an object is an instance of a particular class. It returns `true` or `false`.
+*   **Casting:** If `instanceof` returns `true`, you can safely **cast** the object to its more specific type to access its unique functionality.
+*   **Example:** The `addRandomNumber` function can be improved:
+    1.  It checks `if (list instanceof ConditionArrayList)`.
+    2.  If true, it casts `list` to a `ConditionArrayList`.
+    3.  It can then access the `isEligible()` method, which is unique to the `ConditionArrayList`, to ensure a valid number is generated before adding it.
+*   This allows you to write general code that can also handle specific cases in a safe, controlled way.
+*   **Predicate:** A `Predicate` is an interface that represents a function taking one argument and returning a boolean. It's often used to pass conditions (like "is a number odd?" or "is a number positive?") as parameters.
+
+## Writing flexible code with compile-time polymorphism
+
+*   Compile-time polymorphism is achieved through **method overloading**.
+*   **Method Overloading:** Creating multiple methods within the same class that have the **same name** but **different parameters**. The difference can be in the number of parameters or the type of parameters.
+*   **How it Works:** The compiler decides which version of the method to call at **compile-time** based on the arguments provided in the method call.
+*   **Example:** Overloading the `ConditionArrayList` constructor:
+    *   One constructor takes just a `Predicate`.
+    *   Another constructor takes a `Predicate` AND a `Collection` of initial numbers.
+*   This provides users of the class with more flexibility in how they can create and interact with objects.
+
+## Exploring how built-in Java classes use polymorphism
+
+*   The standard Java library uses both types of polymorphism extensively.
+*   **Compile-Time Polymorphism in `ArrayList`:**
+    *   `ArrayList` has two `addAll()` methods (method overloading).
+    *   `addAll(Collection c)` adds a collection to the end.
+    *   `addAll(int index, Collection c)` adds a collection at a specific index.
+*   **Runtime Polymorphism in `ArrayList`:**
+    *   `ArrayList` extends `AbstractList`.
+    *   `AbstractList` has an `add()` method that, by default, just throws an exception.
+    *   This forces any concrete subclass like `ArrayList` to `@Override` the `add()` method with a real, working implementation. This is a common design pattern to ensure subclasses implement required functionality.
+*   **Which is better?**
+    *   Both are essential and serve different purposes.
+    *   **Overloading (compile-time)** is for providing multiple ways to call a method with different inputs.
+    *   **Overriding (runtime)** is for changing the behavior of a method within a class hierarchy.
+
+## Challenge: Reduce complexity with polymorphism
+
+*   **Task:** Create a `Contact` class that can be instantiated with different sets of information (e.g., name/phone, name/email, or all three).
+*   **Goal:** Use polymorphism to reduce complexity for the user creating the contacts.
+
+## Solution: Reduce complexity with polymorphism
+
+*   **Compile-Time Polymorphism:** The solution uses **method overloading** for the `Contact` constructor to provide different ways to create a contact.
+    *   An issue arises when two constructors have the same parameter types (`(String name, String phone)` and `(String name, String email)`), as the compiler can't tell them apart.
+    *   This is resolved by creating a separate `PhoneNumber` class, which changes the signature of one constructor to `(String name, PhoneNumber phone)`. This also improves the design through encapsulation.
+*   **Runtime Polymorphism:** The solution also uses **method overriding** by implementing the `toString()` method in both the `Contact` and `PhoneNumber` classes.
+    *   This overrides the default `Object.toString()` behavior, providing a custom, meaningful string representation of the contact's data when printed to the console.
+
+## Chapter Quiz
+
+**Question 1 of 6**
+
+What types of polymorphism does Java support?
+
+*   **runtime and compile-time (Correct)**
+*   static and non-static
+*   public and private
+
+**Question 2 of 6**
+
+In Java, how does the use of the keyword @Override differ from super?
+
+*   **@Override is used to override a superclass method, while super is used to access methods of the superclass. (Correct)**
+*   @Override is used to call the methods of the superclass, while super is used to call the methods of the subclass.
+*   @Override is used to create objects of the superclass, while super is used to call methods of the subclass.
+
+**Question 3 of 6**
+
+In general, how should you overload a method or constructor?
+
+*   Use the same name and parameters but use the @Overload keyword.
+*   **Use the same name but provide a different set of parameters. (Correct)**
+*   Use a different name and a different set of parameters.
+
+**Question 4 of 6**
+
+Each of the different polymorphism types have their use cases, but which one is accomplished by overloading methods?
+
+*   runtime
+*   call-time
+*   **compile-time (Correct)**
+
+**Question 5 of 6**
+
+You have a class that extends ArrayList and overrides the add method to only add odd elements. How can you fix the following function to always add, using the overloaded method, a random number?
+
+```java
+public static void addRandomNumber(ArrayList<Integer> list) {
+     Random random = new Random();
+     int n = random.nextInt(bound: 1000)
+     list.add(n)
+}
+```
+
+*   Use the add method you made specifically for your extended OddArrayList class.
+*   **Test if the array has increased in size by 1 and roll another random number if it has not. (Correct)**
+*   Change the random number random range to be from 0 to 999.
+
+**Question 6 of 6**
+
+Which statement best explains predicates in Java?
+
+*   **They take in a value and return true or false. (Correct)**
+*   They determine whether an integer is odd or even.
+*   They override methods from an extended class.
